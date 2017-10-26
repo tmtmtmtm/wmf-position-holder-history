@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  </head>
+  <body>
+
+    <div class="container mt-3">
+      <h1>Position Holder History</h1>
+
+      <p>The Position Holder History tool generates nice timeline table
+        of everyone who has had
+        a <a href="https://www.wikidata.org/wiki/Property:P39">position
+        held (P39)</a> relationship with a particular position,
+        and points out possible errors in the data.</p>
+
+      <p>In order to use the this tool, you might add, for
+        example, the template:</p>
+
+      <pre>{{PositionHolderHistory|id=Q14211}}</pre>
+
+      <p>... to a page, and click the 'Update timeline' button
+      to update the page.</p>
+
+      <h2>Useful links</h2>
+
+      <ul>
+        <li><a href="https://www.wikidata.org/wiki/Template:PositionHolderHistory">Template documentation</a></li>
+      </ul>
+
+      <h2>Source code</h2>
+
+      <p>The source code for the prompter tool can be found in
+        these two repositories:</p>
+
+      <ul>
+        <li><a href="https://github.com/everypolitician/wmf-position-holder-history">everypolitician/wmf-position-holder-history</a>: the HTTP interface to the tool</li>
+        <li><a href="https://github.com/everypolitician/wikidata-position-history">everypolitician/wikidata-position-history</a>: the underlying library that generates the history of the position</li>
+      </ul>
+
+      <p>This tool is being developed as part of the
+        <a href="https://meta.wikimedia.org/wiki/Grants:Project/mySociety/EveryPolitician">Wikimedia
+        / mySociety / EveryPolitician</a> grant.</p>
+    </div>
+
+    <!-- jQuery first, then Popper, then Bootstrap JS. -->
+    <script src="https://tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  </body>
+</html>
