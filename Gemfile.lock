@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/everypolitician/wikidata-position-history
-  revision: 7890ad59848c5d91742a54f99cbac8296f403d55
-  branch: gemify-and-add-cli
+  revision: 4be2053a668e45a2408a3ed10a972f89e53928de
+  branch: master
   specs:
     wikidata_position_history (0.1.0)
       mediawiki-page-replaceable_content (= 0.1.2)
