@@ -5,10 +5,10 @@ require 'wikidata_position_history'
 require 'sinatra'
 
 get '/' do
-  redirect to('/position-history-holder')
+  redirect to('/position-holder-history')
 end
 
-get '/position-history-holder/?' do
+get '/position-holder-history/?' do
   mediawiki_site = params[:mediawiki_site]
   page_title = params[:page_title]
 
