@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/everypolitician/wikidata-position-history
-  revision: 6ccf619a279b69182a323c83f72caddc90ba82e3
+  revision: cbaaa069d7c688af60071d5ce37f783a0984ef27
   branch: master
   specs:
     wikidata_position_history (0.1.0)
