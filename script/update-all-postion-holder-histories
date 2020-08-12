@@ -56,8 +56,8 @@ end
 
 titles = EmbeddedSearch.new('Template:PositionHolderHistory').titles
 
-titles.each do |title|
-  puts "  Updating #{title}"
+titles.each_with_index do |title, i|
+  puts "  Updating #{title} (#{i + 1} of #{titles.count})"
 
   rewriter = WikidataPositionHistory::PageRewriter.new(
     mediawiki_site: WIKI_SITE,
