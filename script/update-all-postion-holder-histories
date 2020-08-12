@@ -37,9 +37,11 @@ class EmbeddedSearch
   end
 
   def response
-    @response ||= eicontinue ?
-      client.action(:query, list: 'embeddedin', eititle: template, eilimit: 500, eicontinue: eicontinue) :
-      client.action(:query, list: 'embeddedin', eititle: template, eilimit: 500)
+    @response ||= client.action(:query, client_args)
+  end
+
+  def client_args
+    { list: 'embeddedin', eititle: template, eilimit: 500, eicontinue: eicontinue }.compact
   end
 
   def continue_response
