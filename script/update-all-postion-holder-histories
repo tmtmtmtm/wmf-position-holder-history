@@ -5,19 +5,18 @@ require_relative '../lib/load_environment_from_yaml'
 require 'wikidata_position_history'
 require 'mediawiki_api'
 
-WIKI_SITE = 'www.wikidata.org'
-WIKI_USERNAME = ENV['WIKI_USERNAME']
-WIKI_PASSWORD = ENV['WIKI_PASSWORD']
-
 class EmbeddedSearch
+  WIKI_SITE = 'www.wikidata.org'
+  WIKI_USERNAME = ENV['WIKI_USERNAME']
+  WIKI_PASSWORD = ENV['WIKI_PASSWORD']
+
   def initialize(template, eicontinue=nil)
     @template = template
     @eicontinue = eicontinue
   end
 
-  def titles
-    abort "Failed to find pages embedding #{template}" unless response.success?
-    response.data['embeddedin'].map { |ei| ei['title'] } + extra_titles
+  def pages
+    response_pages + extra_pages
   end
 
   private
@@ -49,26 +48,31 @@ class EmbeddedSearch
     response.send(:response_object)['continue']
   end
 
-  def extra_titles
+  def response_pages
+    abort "Failed to find pages embedding #{template}" unless response.success?
+
+    response.data['embeddedin'].map do |ei|
+      { mediawiki_site: WIKI_SITE, page_title: ei['title'] }
+    end
+  end
+
+  def extra_pages
     return [] unless continue_response
 
-    self.class.new(template, continue_response['eicontinue']).titles
+    self.class.new(template, continue_response['eicontinue']).pages
   end
 end
 
-titles = EmbeddedSearch.new('Template:PositionHolderHistory').titles
+pages = EmbeddedSearch.new('Template:PositionHolderHistory').pages
 
-titles.each_with_index do |title, i|
-  puts "  Updating #{title} (#{i + 1} of #{titles.count})"
+pages.reverse.each_with_index do |page, i|
+  puts "  Updating #{page[:page_title]} (#{i + 1} of #{pages.count})"
 
-  rewriter = WikidataPositionHistory::PageRewriter.new(
-    mediawiki_site: WIKI_SITE,
-    page_title: title
-  )
+  rewriter = WikidataPositionHistory::PageRewriter.new(page)
 
   begin
     rewriter.run!
   rescue => e
-    warn "Error updating #{title}: #{e.message}"
+    warn "Error updating #{page[:page_title]}: #{e.message}"
   end
 end
