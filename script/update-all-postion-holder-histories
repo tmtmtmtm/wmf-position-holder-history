@@ -8,16 +8,55 @@ require 'mediawiki_api'
 WIKI_SITE = 'www.wikidata.org'
 WIKI_USERNAME = ENV['WIKI_USERNAME']
 WIKI_PASSWORD = ENV['WIKI_PASSWORD']
-WIKI_TEMPLATE_NAME = 'Template:PositionHolderHistory'.freeze
 
-client = MediawikiApi::Client.new("https://#{WIKI_SITE}/w/api.php")
-result = client.log_in(WIKI_USERNAME, WIKI_PASSWORD)
-abort "MediawikiApi::Client#log_in failed: #{result}" unless result['result'] == 'Success'
+class EmbeddedSearch
+  def initialize(template, eicontinue=nil)
+    @template = template
+    @eicontinue = eicontinue
+  end
 
-result = client.action(:query, list: 'embeddedin', eititle: WIKI_TEMPLATE_NAME, eilimit: 500)
-abort "Failed to find pages embedding #{WIKI_TEMPLATE_NAME}" unless result.success?
+  def titles
+    abort "Failed to find pages embedding #{template}" unless response.success?
+    response.data['embeddedin'].map { |ei| ei['title'] } + extra_titles
+  end
 
-result.data['embeddedin'].map { |ei| ei['title'] }.each do |title|
+  private
+
+  attr_reader :template, :eicontinue
+
+  def client
+    @client = MediawikiApi::Client.new("https://#{WIKI_SITE}/w/api.php")
+  end
+
+  def logged_in_client
+    @logged_in_client ||= begin
+      li_response = client.log_in(WIKI_USERNAME, WIKI_PASSWORD)
+      abort "MediawikiApi::Client#log_in failed: #{response}" unless li_response['result'] == 'Success'
+      client
+    end
+  end
+
+  def response
+    @response ||= eicontinue ?
+      client.action(:query, list: 'embeddedin', eititle: template, eilimit: 500, eicontinue: eicontinue) :
+      client.action(:query, list: 'embeddedin', eititle: template, eilimit: 500)
+  end
+
+  def continue_response
+    # there must be a way to get this without calling a private method!
+    response.send(:response_object)['continue']
+  end
+
+  def extra_titles
+    return [] unless continue_response
+
+    self.class.new(template, continue_response['eicontinue']).titles
+  end
+end
+
+titles = EmbeddedSearch.new('Template:PositionHolderHistory').titles
+
+titles.each do |title|
   puts "  Updating #{title}"
 
   rewriter = WikidataPositionHistory::PageRewriter.new(
