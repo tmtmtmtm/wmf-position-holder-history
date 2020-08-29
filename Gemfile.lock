@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/tmtmtmtm/wikidata-position-history
-  revision: db7bffc9f79c540d07e347bc2d8fcd9bf793f0a7
+  revision: 23331801e0a33306a060e8f85537cff0cefc74f1
   branch: master
   specs:
-    wikidata_position_history (1.3.1)
+    wikidata_position_history (1.3.2)
       mediawiki-page-replaceable_content (= 0.1.3)
       rest-client (~> 2.0)
 
